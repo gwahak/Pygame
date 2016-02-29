@@ -37,7 +37,7 @@ def draw():
     global screen, clock, font
 
     screen.fill((0, 0, 0))
-    screen.blit(font.render(str(clock.get_fps()), True, (255, 255, 255)), (10, 10))
+    screen.blit(font.render("FPS: {0:.2F}".format(clock.get_fps()), True, (255, 255, 255)), (10, 10))
     pygame.display.update()
 
 if __name__ == '__main__':
