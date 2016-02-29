@@ -8,6 +8,7 @@ font = None
 
 def main():
     pygame.init()
+    init()
 
     while going:
         update()
