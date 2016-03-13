@@ -28,6 +28,8 @@ class Gomoku():
         for e in pygame.event.get():
             if e.type == pygame.QUIT:
                 self.going = False
+            elif e.type == pygame.MOUSEBUTTONDOWN:
+                self.chessboard.handle_key_event(e)
 
     def draw(self):
         self.screen.fill((255, 255, 255))
