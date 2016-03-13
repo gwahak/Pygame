@@ -9,6 +9,13 @@ class Chessboard:
         self.edge_size = 15
         self.grid_count = 19
 
+        self.grid = []
+        for i in range(self.grid_count):
+            self.grid.append(list("." * self.grid_count))
+
+    def set_piece(self, r, c, color):
+        self.grid[r][c] = color
+
     def draw(self, screen):
         # 棋盤底色
         pygame.draw.rect(screen, (185, 122, 87),
@@ -22,3 +29,16 @@ class Chessboard:
         for c in range(self.grid_count):
             x = self.start_x + c * self.grid_size
             pygame.draw.line(screen, (0, 0, 0), [x, self.start_y], [x, self.start_y + self.grid_size * (self.grid_count - 1)], 2)
+
+        for r in range(self.grid_count):
+            for c in range(self.grid_count):
+                piece = self.grid[r][c]
+                if piece != '.':
+                    if piece == 'b':
+                        color = (0, 0, 0)
+                    else:
+                        color = (255, 255, 255)
+
+                    x = self.start_x + c * self.grid_size
+                    y = self.start_y + r * self.grid_size
+                    pygame.draw.circle(screen, color, [x, y], self.grid_size // 2)
