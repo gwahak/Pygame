@@ -1,5 +1,7 @@
 import pygame
 
+from Lession04.Gomoku.Chessboard import Chessboard
+
 
 class Gomoku():
 
@@ -11,6 +13,8 @@ class Gomoku():
         self.clock = pygame.time.Clock()
         self.font = pygame.font.Font(r"C:\Windows\Fonts\consola.ttf", 24)
         self.going = True
+
+        self.chessboard = Chessboard()
 
     def loop(self):
         while self.going:
@@ -28,6 +32,9 @@ class Gomoku():
     def draw(self):
         self.screen.fill((255, 255, 255))
         self.screen.blit(self.font.render("FPS: {0:.2F}".format(self.clock.get_fps()), True, (0, 0, 0)), (10, 10))
+
+        self.chessboard.draw(self.screen)
+
         pygame.display.update()
 
 
