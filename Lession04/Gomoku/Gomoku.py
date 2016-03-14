@@ -36,6 +36,8 @@ class Gomoku():
         self.screen.blit(self.font.render("FPS: {0:.2F}".format(self.clock.get_fps()), True, (0, 0, 0)), (10, 10))
 
         self.chessboard.draw(self.screen)
+        if self.chessboard.game_over:
+            self.screen.blit(self.font.render("{0} Win".format("Black" if self.chessboard.winner == 'b' else "White"), True, (0, 0, 0)), (500, 10))
 
         pygame.display.update()
 
