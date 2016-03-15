@@ -19,7 +19,7 @@ class Chessboard:
     def handle_key_event(self, e):
         origin_x = self.start_x - self.edge_size
         origin_y = self.start_y - self.edge_size
-        size = (self.grid_count - 1) * self.grid_size + self.edge_size
+        size = (self.grid_count - 1) * self.grid_size + self.edge_size * 2
         pos = e.pos
         if origin_x <= pos[0] <= origin_x + size and origin_y <= pos[1] <= origin_y + size:
             if not self.game_over:
