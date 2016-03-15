@@ -1,6 +1,6 @@
 import pygame
 
-from Lession04.Gomoku.Chessboard import Chessboard
+from Lesson04.Gomoku.Chessboard import Chessboard
 
 
 class Gomoku():
