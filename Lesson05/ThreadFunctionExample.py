@@ -8,8 +8,8 @@ def big_calc_job(n):
         result *= i
     print(result)
 
-if __name__ == '__main__':
 
+if __name__ == '__main__':
     # 不用 thread
     print('=== start ===')
     big_calc_job(100000)
