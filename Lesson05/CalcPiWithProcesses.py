@@ -22,8 +22,8 @@ def calc_pi_with_processes(point_count):
     processes_count = 4
     result = None
     with Pool(processes=processes_count) as pool:
-        result = pool.map(calc_pi, [point_count // processes_count] * 4)
-    return sum(result) * 4 / point_count
+        result = pool.map(calc_pi, [point_count // processes_count] * processes_count)
+    return sum(result) / point_count * 4
 
 
 def main():

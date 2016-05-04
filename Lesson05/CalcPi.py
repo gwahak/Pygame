@@ -9,8 +9,8 @@ def calc_pi(point_count):
     for i in range(point_count):
         x = random.uniform(-1, 1)
         y = random.uniform(-1, 1)
-        dist = x ** 2 + y ** 2
-        if dist <= 1 ** 2:
+        dist2 = x ** 2 + y ** 2
+        if dist2 <= 1 ** 2:
             in_circle_count += 1
     return in_circle_count * 4 / point_count
 
