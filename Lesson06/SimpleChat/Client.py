@@ -4,7 +4,10 @@ import threading
 
 def recv_message(clientsocket):
     while True:
-        message = clientsocket.recv(1024)
+        try:
+            message = clientsocket.recv(1024)
+        except:
+            break
 
         if message == b'':
             break

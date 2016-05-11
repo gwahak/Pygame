@@ -13,6 +13,7 @@ def send_message_to_all(nickname, message):
 
 
 def listen_connect(nickname, clientsocket, address):
+    clientsockets.append(clientsocket)
     while True:
         message = clientsocket.recv(1024)
         if message == b'':
@@ -20,6 +21,7 @@ def listen_connect(nickname, clientsocket, address):
 
         print(message.decode('utf-8'))
         threading.Thread(target=send_message_to_all, args=(nickname, message)).start()
+    clientsockets.remove(clientsocket)
     print('clientsocket end')
 
 
@@ -34,7 +36,6 @@ def main():
     while True:
         (clientsocket, address) = serversocket.accept()
 
-        clientsockets.append(clientsocket)
         # clientsocket.settimeout(10)
         nickname = clientsocket.recv(1024)
         clientsocket.send(str.encode('歡迎來到聊天室. '))
