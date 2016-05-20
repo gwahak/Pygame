@@ -30,10 +30,8 @@ class Chessboard:
         :param c: 行
         :return: 是否成功下子
         """
-        if self.game_over:
-            return False
 
-        if self.grid[r][c] == '.':
+        if self.can_set_piece(r, c):
             self.grid[r][c] = self.piece
 
             if self.piece == 'b':
@@ -44,9 +42,12 @@ class Chessboard:
             return True
         return False
 
-    def check_set_piece(self, r, c):
+    def can_set_piece(self, r, c):
         """檢查是否能下子"""
-        pass
+        if self.game_over:
+            return False
+
+        return self.grid[r][c] == '.'
 
     def check_win(self, r, c):
         n_count = self.get_continuous_count(r, c, -1, 0)
