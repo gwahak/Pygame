@@ -10,7 +10,7 @@ class GomokuClient():
         self.screen = pygame.display.set_mode((800, 600))
         pygame.display.set_caption("多人連線五子棋")
         self.clock = pygame.time.Clock()
-        self.font = pygame.font.Font(r"C:\Windows\Fonts\consola.ttf", 24)
+        self.font = pygame.font.Font(r"C:\Windows\Fonts\SimHei.ttf", 24)
         self.going = True
         # 遊戲狀態
         # wait: 等待連線
