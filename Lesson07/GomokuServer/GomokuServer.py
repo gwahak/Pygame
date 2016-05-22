@@ -14,6 +14,9 @@ def receive_message(client_socket):
         if message == b'':
             break
 
+        print(message)
+        message_queue.put(message)
+
     # 向queue發送連線中斷通知
     # TODO
 
@@ -29,12 +32,17 @@ def main():
     players = []
     while len(players) < 2:
         (client_socket, address) = server_socket.accept()
-        players.append(client_socket)
 
         # 告知玩家連線成功，並告訴玩家執哪一子
-        # TODO
+        msg = client_socket.recv(1024)
+        if msg == b'join_game':
+            players.append(client_socket)
+            if len(players) == 1:
+                client_socket.send(b'0black')
+            else:
+                client_socket.send(b'0white')
 
-        threading.Thread(target=receive_message, args=(client_socket,)).start()
+            threading.Thread(target=receive_message, args=(client_socket,)).start()
 
     # 初始化棋盤
     # 變更遊戲狀態 -> 對戰中
@@ -44,6 +52,8 @@ def main():
 
     # 不斷從 Queue 接收玩家下子的要求
     # 並發出更新到所有玩家
+    while True:
+        job = message_queue.get()
 
 
 if __name__ == '__main__':
