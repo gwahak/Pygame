@@ -23,6 +23,9 @@ class Chessboard:
         for i in range(self.grid_count):
             self.grid.append(list("." * self.grid_count))
 
+    def is_my_turn(self, my_piece):
+        return my_piece == self.piece
+
     def set_piece(self, r, c):
         """
         在 (r, c)下子，並自動切換玩家

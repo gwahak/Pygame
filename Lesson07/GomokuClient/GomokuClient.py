@@ -7,6 +7,7 @@ import pygame
 from Lesson07.GomokuClient.ChessboardClient import ChessboardClient
 
 message_queue = Queue()
+send_queue = Queue()
 
 
 def receive_message(server_socket):
@@ -23,6 +24,13 @@ def receive_message(server_socket):
     # TODO
 
 
+def send_message(server_socket):
+    while True:
+        msg = send_queue.get()
+
+        server_socket.send(str.encode(msg))
+
+
 class GomokuClient:
     def __init__(self):
         pygame.init()
@@ -32,7 +40,7 @@ class GomokuClient:
         self.clock = pygame.time.Clock()
         self.font = pygame.font.Font(r"C:\Windows\Fonts\SimHei.ttf", 24)
         self.going = True
-        self.piece = b'wait'
+        self.piece = 'wait'
 
         self.chessboard = ChessboardClient()
 
@@ -41,6 +49,8 @@ class GomokuClient:
 
         s.send(str.encode('join_game'))
         threading.Thread(target=receive_message, args=(s,)).start()
+        threading.Thread(target=send_message, args=(s,)).start()
+
         # 遊戲狀態
         # start_connect: 開始連線
         # wait_connect: 連線中...
@@ -62,8 +72,7 @@ class GomokuClient:
             if e.type == pygame.QUIT:
                 self.going = False
             elif e.type == pygame.MOUSEBUTTONDOWN:
-                # TODO: 計算座標，檢查是否可以下子，在送出封包
-                pass
+                self.handle_MOUSEBUTTONDOWN(e)
 
         # 檢查 Queue
         # 有的話取一個來處理
@@ -71,14 +80,26 @@ class GomokuClient:
             job = message_queue.get()
 
             if job[0] == ord('0'):
-                self.piece = job[1:]
+                self.piece = job[1:].decode("utf-8")
                 self.status = 'wait_game'
+            elif job[0] == ord('1'):
+                if job[1:] == b'game_start':
+                    self.status = 'gaming'
+            elif job[0] == ord('3'):
+                if self.status == 'gaming':
+                    pos_msg = job[1:].decode("utf-8")
+                    r, c = pos_msg.split(',')
+                    r = int(r)
+                    c = int(c)
+
+                    if self.chessboard.set_piece(r, c):
+                        self.chessboard.check_win(r, c)
 
     def draw(self):
         self.screen.fill((255, 255, 255))
         self.screen.blit(self.font.render("FPS: {0:.2F}".format(self.clock.get_fps()), True, (0, 0, 0)), (10, 10))
 
-        self.screen.blit(self.font.render(self.piece.decode("utf-8"), True, (0, 0, 0)), (200, 10))
+        self.screen.blit(self.font.render(self.piece, True, (0, 0, 0)), (200, 10))
 
         self.chessboard.draw(self.screen)
         if self.chessboard.game_over:
@@ -100,6 +121,21 @@ class GomokuClient:
 
         pygame.display.update()
 
+    def handle_MOUSEBUTTONDOWN(self, e):
+        # 計算座標，檢查是否可以下子，在送出封包
+        if self.status == 'gaming':
+            if not self.chessboard.is_in_area(e.pos[0], e.pos[1]):
+                return
+            if not self.chessboard.is_my_turn(self.piece):
+                return
+
+            r, c = self.chessboard.get_r_c(e.pos[0], e.pos[1])
+
+            if not self.chessboard.can_set_piece(r, c):
+                return
+
+            # 送出封包
+            send_queue.put('3{0},{1}'.format(r, c))
 
 if __name__ == '__main__':
     game = GomokuClient()
