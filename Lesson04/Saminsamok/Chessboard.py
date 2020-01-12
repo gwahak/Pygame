@@ -36,6 +36,8 @@ class Chessboard:
 
             if self.piece == 'b':
                 self.piece = 'w'
+            elif self.piece == 'w':
+                self.piece = 'r'
             else:
                 self.piece = 'b'
 
@@ -55,8 +57,8 @@ class Chessboard:
         ne_count = self.get_continuous_count(r, c, -1, 1)
         sw_count = self.get_continuous_count(r, c, 1, -1)
 
-        if (n_count + s_count + 1 >= 5) or (e_count + w_count + 1 >= 5) or \
-                (se_count + nw_count + 1 >= 5) or (ne_count + sw_count + 1 >= 5):
+        if (n_count + s_count + 1 >= 4) or (e_count + w_count + 1 >= 4) or \
+                (se_count + nw_count + 1 >= 4) or (ne_count + sw_count + 1 >= 4):
             self.winner = self.grid[r][c]
             self.game_over = True
 
@@ -97,8 +99,10 @@ class Chessboard:
                 if piece != '.':
                     if piece == 'b':
                         color = (0, 0, 0)
-                    else:
+                    elif piece == 'w':
                         color = (255, 255, 255)
+                    else:
+                        color = (255, 0, 0)
 
                     x = self.start_x + c * self.grid_size
                     y = self.start_y + r * self.grid_size

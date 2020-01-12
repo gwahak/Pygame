@@ -1,21 +1,21 @@
 import pygame
 
-from Lesson04.Gomoku.Chessboard import Chessboard
+from Chessboard import Chessboard
 
 
-class Gomoku():
+class Saminsamok():
 
     def __init__(self):
         pygame.init()
 
         self.screen = pygame.display.set_mode((800, 600))
-        pygame.display.set_caption("五子棋")
+        pygame.display.set_caption("三人四子棋")
         self.clock = pygame.time.Clock()
         self.font = pygame.font.Font(r"C:\Windows\Fonts\consola.ttf", 24)
         self.going = True
 
         self.chessboard = Chessboard()
-
+        self.colorname= {'b':"Black", 'w':"White", 'r':"Red"}
     def loop(self):
         while self.going:
             self.update()
@@ -37,11 +37,11 @@ class Gomoku():
 
         self.chessboard.draw(self.screen)
         if self.chessboard.game_over:
-            self.screen.blit(self.font.render("{0} Win".format("Black" if self.chessboard.winner == 'b' else "White"), True, (0, 0, 0)), (500, 10))
+            self.screen.blit(self.font.render("{0} Win".format(self.colordict[self.chessboard.winner]), True, (0, 0, 0)), (500, 10))
 
         pygame.display.update()
 
 
 if __name__ == '__main__':
-    game = Gomoku()
+    game = Saminsamok()
     game.loop()
